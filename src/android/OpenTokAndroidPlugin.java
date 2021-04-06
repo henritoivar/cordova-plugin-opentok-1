@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.Manifest;
+import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.annotation.SuppressLint;
@@ -104,7 +105,8 @@ public class OpenTokAndroidPlugin extends CordovaPlugin
             // Sort is still needed, because we need to sort from negative to positive for the z translation.
             Collections.sort(allStreamViews, new CustomComparator());
 
-            for (RunnableUpdateViews viewContainer : allStreamViews) {
+            for (int i = 0; i < allStreamViews.size(); i++) {
+                RunnableUpdateViews viewContainer  = allStreamViews.get(i);
                 // Set depth location of camera view based on CSS z-index.
                 // See: https://developer.android.com/reference/android/view/View.html#setTranslationZ(float)
                 if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -112,8 +114,12 @@ public class OpenTokAndroidPlugin extends CordovaPlugin
                 }
                 // If the zIndex is 0(default) bring the view to the top, last one wins.
                 // See: https://github.com/saghul/cordova-plugin-iosrtc/blob/5b6a180b324c8c9bac533fa481a457b74183c740/src/PluginMediaStreamRenderer.swift#L191
-                if(viewContainer.getZIndex() == 0) {
-                    viewContainer.mView.bringToFront();
+                if(i == allStreamViews.size() - 1) {
+                    if (viewContainer.mView instanceof GLSurfaceView) {
+                        ((GLSurfaceView) viewContainer.mView).setZOrderOnTop(true);
+                    } else {
+                        viewContainer.mView.bringToFront();
+                    }
                 }
             }
         }
