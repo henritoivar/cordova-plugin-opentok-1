@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 module.exports = function (context) {
-    var IosSDKVersion = "OpenTok-iOS-2.18.1";
+    var IosSDKVersion = "OpenTok-iOS-2.19.0";
     var downloadFile = require('./downloadFile.js'),
         exec = require('./exec/exec.js'),
         Q = require('q'),
@@ -11,7 +11,7 @@ module.exports = function (context) {
         './' + IosSDKVersion + '.tar.bz2', function (err) {
             if (!err) {
                 console.log('downloaded');
-                exec('tar -zxvf ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
+                exec('tar -xvf ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
                     console.log('expanded');
                     var frameworkDir = context.opts.plugin.dir + '/src/ios/';
                     exec('mv ./' + IosSDKVersion + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
