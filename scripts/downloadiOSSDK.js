@@ -17,9 +17,16 @@ module.exports = function (context) {
                     }
                     console.log('expanded');
                     var frameworkDir = context.opts.plugin.dir + '/src/ios/';
-                    exec('mv ./' + IosSDKVersion + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
+                    var unzippedDir = 'OpenTok-iOS';
+                    exec('mv ./' + unzippedDir + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
+                        if (err) {
+                            console.log(err);
+                        }
                         console.log('moved OpenTok.framework into ' + frameworkDir);
-                        exec('rm -r ./' + IosSDKVersion, function (err, out, code) {
+                        exec('rm -r ./' + unzippedDir, function (err, out, code) {
+                            if (err) {
+                                console.log(err);
+                            }
                             console.log('Removed extracted dir');
                             exec('rm ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
                                 console.log('Removed downloaded SDK');
