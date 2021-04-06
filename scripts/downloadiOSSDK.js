@@ -11,7 +11,10 @@ module.exports = function (context) {
         './' + IosSDKVersion + '.tar.bz2', function (err) {
             if (!err) {
                 console.log('downloaded');
-                exec('tar -xvf ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
+                exec('tar -zxvf ./' + IosSDKVersion + '.tar.bz2', function (err, out, code) {
+                    if (err) {
+                        console.log(err);
+                    }
                     console.log('expanded');
                     var frameworkDir = context.opts.plugin.dir + '/src/ios/';
                     exec('mv ./' + IosSDKVersion + '/OpenTok.framework ' + frameworkDir, function (err, out, code) {
